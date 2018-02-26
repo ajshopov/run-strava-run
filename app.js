@@ -1,8 +1,9 @@
 var express = require('express')
 var app = express()
 var strava = require('strava-v3');
+var accessToken = process.env.STRAVA_ACCESS_TOKEN;
 
-strava.athletes.get({id:26705652},function(err,payload,limits) {
+strava.athletes.get({id:26705652, 'access_token': accessToken},function(err,payload,limits) {
     //do something with your payload, track rate limits
     console.log(err)
     console.log(payload)
