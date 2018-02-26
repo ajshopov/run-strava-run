@@ -1,4 +1,5 @@
 var express = require('express')
+var passport = require('passport')
 var app = express()
 const PORT = process.env.PORT || 3000;
 var strava = require('strava-v3');
@@ -31,7 +32,6 @@ strava.oauth.getRequestAccessURL({STRAVA_ACCESS_TOKEN, STRAVA_CLIENT_SECRET, STR
 // });
 
 
-
 app.get('/', function (req, res) {
   res.render('splash')
 })
@@ -53,6 +53,15 @@ app.get('/home', function (req, res) {
   // res.json(appData)
 })
  
+
+  // fetch('https://www.strava.com/oauth/authorize', function(req, res){
+  //       res.json({
+  //         query_string_client_id: 23601,
+  //         redirect_uri: 'http://localhost/',
+  //         response_type: 'code',
+  //         approval_prompt: 'force'
+  //       })
+  // })
 
 app.listen(PORT, function(){
   console.log(`listening on port ${PORT}`);

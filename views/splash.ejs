@@ -1,6 +1,33 @@
 <h1>run strava run</h1>
 
 
-<form action="/home">
+<form action="">
   <button>connect to strava</button>
 </form>
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+<script>
+  // $('button').click(function(){
+  //   console.log('clicked')
+    let options = {
+      body: {
+        client_id: 23601,
+        redirect_uri: 'http://localhost/',
+        response_type: 'code',
+        approval_prompt: 'force'
+      },
+      method: "GET",
+      mode: 'cors',
+      headers: {'Content-type': 'application/json'},
+      credentials: 'same-origin'
+    }
+
+    fetch('https://www.strava.com/oauth/authorize', options)
+      .then(res => res.json())
+      .then(res => console.log(res))
+    
+  // })
+</script>
