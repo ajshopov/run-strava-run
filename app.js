@@ -5,7 +5,7 @@ var StravaStrategy = require('passport-strava-oauth2').Strategy;
 var app = express()
 // const PORT = process.env.PORT || 3000;
 var strava = require('strava-v3');
-// var request = require('request');
+var request = require('request');
 // let cors = require('cors')
 // app.use(cors());
 
@@ -34,9 +34,6 @@ app.use(passport.session());
 
 var appData;
 
-var userToken;
-
-
 passport.use(new StravaStrategy({
     clientID: STRAVA_CLIENT_ID,
     clientSecret: STRAVA_CLIENT_SECRET,
@@ -58,18 +55,7 @@ passport.use(new StravaStrategy({
 
 
 
-
 // strava.oauth.getRequestAccessURL({STRAVA_ACCESS_TOKEN, STRAVA_CLIENT_SECRET, STRAVA_CLIENT_ID, STRAVA_REDIRECT_URI})
-
-
-
-// request(`https://www.strava.com/api/v3/athletes/26705652?access_token=${STRAVA_ACCESS_TOKEN}`, function (error, response, body) {
-//   // console.log('error:', error); // Print the error if one occurred
-//   // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-//   // console.log('body:', body); // Print the HTML for the Google homepage.
-//   console.log(JSON.parse(body))
-//   appData = JSON.parse(body)
-// });
 
 
 app.get('/', function (req, res) {
@@ -114,23 +100,66 @@ app.get('/home', ensureAuthenticated, function (req, res) {
   // });
 
   res.render('home',{ user: req.user })
+
+
   // console.log(req.user)
   // res.json(appData)
 })
 
 
-app.get('/json', ensureAuthenticated, function(req,res){
+app.get('/one_act', ensureAuthenticated, function(req,res){
   var args = {
     id:1424416003, 'access_token':STRAVA_ACCESS_TOKEN}
     strava.activities.get(args,function(err,payload,limits) {
-    console.log(err)
-    console.log(payload)
-    console.log(limits)
+    // console.log(err)
+    // console.log(payload)
+    // console.log(limits)
      //do something with your payload, track rate limits 
+    res.json(payload)
+    // console.log(payload.best_efforts)
+    var bestData = payload.best_efforts
+    for (var i = 0; i < bestData.length; i++) {
+      console.log(bestData[i].name)
+      console.log(bestData[i].moving_time)
+    }
  });
-  // console.log(req.user)
-  res.json(req.user)
+  // res.json(req.user)
 })
+
+
+app.get('/all', ensureAuthenticated, function (req, res) {
+  request(`https://www.strava.com/api/v3/athlete/activities?per_page=50&access_token=${STRAVA_ACCESS_TOKEN}`, function (error, response, body) {
+  // console.log('error:', error); // Print the error if one occurred
+  // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+  // console.log('body:', body); // Print the HTML for the Google homepage.
+  // console.log(JSON.parse(body))
+  res.json(JSON.parse(body))
+  appData = JSON.parse(body)
+
+  console.log(appData.length)
+  var activityIds = [];
+  for (var i = 0; i < appData.length; i++) {
+    if (appData[i].type == "Run") {
+      activityIds.push(appData[i].id);
+    }
+  }
+  console.log(activityIds)
+  console.log(activityIds.length)
+
+  for (var i = 0; i < activityIds.length; i++) {
+    activityIds[i]
+    strava.activities.get({id:activityIds[i], 'access_token':STRAVA_ACCESS_TOKEN},function(err,payload,limits) {
+      console.log(err)
+      console.log(payload)
+      console.log(limits)
+       //do something with your payload, track rate limits
+      
+    });
+  }
+
+});
+})
+
 
 app.get('/logout', function(req, res){
   req.logout();
@@ -149,6 +178,10 @@ app.get('/logout', function(req, res){
 app.listen(3000, function(){
   console.log(`listening on port 3000`);
 }); 
+
+
+
+
 
 
 function ensureAuthenticated(req, res, next) {
