@@ -162,7 +162,6 @@ app.get('/all', ensureAuthenticated, function (req, res) {
     var allRuns = [];
     for (var i = 0; i < activityIds.length; i++) {
       
-
       strava.activities.get({id:activityIds[i], 'access_token':STRAVA_ACCESS_TOKEN},function(err,payload,limits) {
         // console.log(err)
 
@@ -186,13 +185,17 @@ app.get('/all', ensureAuthenticated, function (req, res) {
         // bests4run.push(tempArr)
         // console.log(bests4run)
         allRuns.push(tempArr);
-        // console.log(allRuns)
+        //console.log(allRuns)
+        if (allRuns.length >= 5) {
+          res.render('all', {
+            allRuns: allRuns
+          })
+        }
+
       });
-      console.log(allRuns)
+
     };
-    res.render('all', {
-      allRuns: allRuns
-    })
+
 
   });
 })
