@@ -21,9 +21,10 @@
   </script>
 
   <script>
+  var dataSet = <%- JSON.stringify(dataSet) %>
   $(document).ready(function() {
     $('#example').DataTable({
-      data: <%= dataSet %>,
+      data: dataSet,
       columns: [
         {title: "Dist"},
         {title: "Time"}
