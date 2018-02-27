@@ -1,8 +1,9 @@
 var express = require('express')
-var passport = require('passport')
+var expressLayouts = require('express-ejs-layouts');
+var passport = require('passport');
 // var util = require('util')
 var StravaStrategy = require('passport-strava-oauth2').Strategy;
-var app = express()
+var app = express();
 // const PORT = process.env.PORT || 3000;
 var strava = require('strava-v3');
 var request = require('request');
@@ -24,8 +25,8 @@ passport.deserializeUser(function(obj, done) {
 
 app.set('views', './views');
 app.set('view engine', 'ejs');
-app.use(express.static('public'))
-
+app.use(express.static('public'));
+app.use(expressLayouts);
 // var cookie = require('cookie');
 app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
