@@ -128,8 +128,7 @@ app.get('/one_act', ensureAuthenticated, function(req,res){
     }
     
     res.render('activity', {
-      dataSet: dataSet,
-      bestData: bestData
+      dataSet: dataSet
     })
 
   });
@@ -143,7 +142,7 @@ app.get('/all', ensureAuthenticated, function (req, res) {
     // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
     // console.log('body:', body); // Print the HTML for the Google homepage.
     // console.log(JSON.parse(body))
-    res.json(JSON.parse(body))
+    // res.json(JSON.parse(body))
     appData = JSON.parse(body)
 
     console.log(appData.length)
@@ -153,25 +152,47 @@ app.get('/all', ensureAuthenticated, function (req, res) {
         activityIds.push(appData[i].id);
       }
     }
+    // res.json(activityIds)
+
     console.log(activityIds)
     console.log(activityIds.length)
     console.log(activityIds[0])
     console.log(typeof(activityIds[0]))
 
-    var bestAll = [];
+    var allRuns = [];
     for (var i = 0; i < activityIds.length; i++) {
+      
+
       strava.activities.get({id:activityIds[i], 'access_token':STRAVA_ACCESS_TOKEN},function(err,payload,limits) {
         // console.log(err)
-        console.log(payload.best_efforts)
+
+        console.log(payload.id)
+        // console.log(payload.best_efforts)
         var bestLoop = payload.best_efforts;
+        // console.log(bestLoop[0])
+        // console.log(bestLoop[1])
+        // console.log(bestLoop.length)
+
+        // bests4run.push([bestLoop[0].name, bestLoop[0].moving_time])
+        console.log('debug?')
+        var tempArr = [];
+        tempArr.push(payload.id)
         // console.log(limits)
         //do something with your payload, track rate limits
+
         for (var j = 0; j < bestLoop.length; j++) {
-          bestAll.push([bestLoop[j].name, bestLoop[j].moving_time])
+          tempArr.push(bestLoop[j].moving_time)
         }
+        // bests4run.push(tempArr)
+        // console.log(bests4run)
+        allRuns.push(tempArr);
+        // console.log(allRuns)
       });
-      console.log(bestAll)
-    }
+      console.log(allRuns)
+    };
+    res.render('all', {
+      allRuns: allRuns
+    })
 
   });
 })
