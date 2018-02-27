@@ -8,22 +8,7 @@
 <body>
   
 <table id="example" class="display" cellspacing="0">
-  <thead>
-    <th>dist</th>
-    <th>time</th>
-  </thead>
-    <tbody>
 
-    <%  for (var i = 0; i < bestData.length; i++) { %>
-      <tr>
-        <td><%= bestData[i].name %></td>
-        <td><%= bestData[i].moving_time %></td>
-      </tr>
-    <% } %>
-
-
-
-    </tbody>
 </table>
 
   <script
@@ -37,8 +22,14 @@
 
   <script>
   $(document).ready(function() {
-      $('#example').DataTable();
-  } );
+    $('#example').DataTable({
+      data: <%= dataSet %>,
+      columns: [
+        {title: "Dist"},
+        {title: "Time"}
+      ]
+    });
+  });
   </script>
 
 </body>

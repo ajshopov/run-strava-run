@@ -110,12 +110,13 @@ app.get('/home', ensureAuthenticated, function (req, res) {
 
 app.get('/one_act', ensureAuthenticated, function(req,res){
   var args = {
-    id:1424416003, 'access_token':STRAVA_ACCESS_TOKEN}
-    strava.activities.get(args,function(err,payload,limits) {
+    id:1424416003, 'access_token':STRAVA_ACCESS_TOKEN
+  }
+  strava.activities.get(args,function(err,payload,limits) {
     // console.log(err)
     // console.log(payload)
     // console.log(limits)
-     //do something with your payload, track rate limits 
+    //do something with your payload, track rate limits 
     // res.json(payload)
     // console.log(payload.best_efforts)
     var bestData = payload.best_efforts
@@ -125,11 +126,11 @@ app.get('/one_act', ensureAuthenticated, function(req,res){
       console.log(bestData[i].moving_time)
       console.log(dataSet)
     }
-
+    
     res.render('activity', {
-        dataSet: dataSet,
-        bestData: bestData
-      })
+      dataSet: dataSet,
+      bestData: bestData
+    })
 
   });
   // res.json(req.user)
