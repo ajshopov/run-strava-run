@@ -107,6 +107,7 @@ app.get('/home', ensureAuthenticated, function (req, res) {
 })
 
 
+
 app.get('/one_act', ensureAuthenticated, function(req,res){
   var args = {
     id:1424416003, 'access_token':STRAVA_ACCESS_TOKEN}
@@ -115,53 +116,69 @@ app.get('/one_act', ensureAuthenticated, function(req,res){
     // console.log(payload)
     // console.log(limits)
      //do something with your payload, track rate limits 
-    res.json(payload)
+    // res.json(payload)
     // console.log(payload.best_efforts)
     var bestData = payload.best_efforts
+    var dataSet = [];
     for (var i = 0; i < bestData.length; i++) {
-      console.log(bestData[i].name)
+      dataSet.push([bestData[i].name, bestData[i].moving_time])
       console.log(bestData[i].moving_time)
+      console.log(dataSet)
     }
- });
+
+    res.render('activity', {
+        dataSet: dataSet,
+        bestData: bestData
+      })
+
+  });
   // res.json(req.user)
 })
 
 
 app.get('/all', ensureAuthenticated, function (req, res) {
-  request(`https://www.strava.com/api/v3/athlete/activities?per_page=50&access_token=${STRAVA_ACCESS_TOKEN}`, function (error, response, body) {
-  // console.log('error:', error); // Print the error if one occurred
-  // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-  // console.log('body:', body); // Print the HTML for the Google homepage.
-  // console.log(JSON.parse(body))
-  res.json(JSON.parse(body))
-  appData = JSON.parse(body)
+  request(`https://www.strava.com/api/v3/athlete/activities?per_page=10&access_token=${STRAVA_ACCESS_TOKEN}`, function (error, response, body) {
+    // console.log('error:', error); // Print the error if one occurred
+    // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+    // console.log('body:', body); // Print the HTML for the Google homepage.
+    // console.log(JSON.parse(body))
+    res.json(JSON.parse(body))
+    appData = JSON.parse(body)
 
-  console.log(appData.length)
-  var activityIds = [];
-  for (var i = 0; i < appData.length; i++) {
-    if (appData[i].type == "Run") {
-      activityIds.push(appData[i].id);
+    console.log(appData.length)
+    var activityIds = [];
+    for (var i = 0; i < appData.length; i++) {
+      if (appData[i].type == "Run") {
+        activityIds.push(appData[i].id);
+      }
     }
-  }
-  console.log(activityIds)
-  console.log(activityIds.length)
+    console.log(activityIds)
+    console.log(activityIds.length)
+    console.log(activityIds[0])
+    console.log(typeof(activityIds[0]))
 
-  for (var i = 0; i < activityIds.length; i++) {
-    activityIds[i]
-    strava.activities.get({id:activityIds[i], 'access_token':STRAVA_ACCESS_TOKEN},function(err,payload,limits) {
-      console.log(err)
-      console.log(payload)
-      console.log(limits)
-       //do something with your payload, track rate limits
-      
-    });
-  }
+    var bestAll = [];
+    for (var i = 0; i < activityIds.length; i++) {
+      strava.activities.get({id:activityIds[i], 'access_token':STRAVA_ACCESS_TOKEN},function(err,payload,limits) {
+        // console.log(err)
+        console.log(payload.best_efforts)
+        var bestLoop = payload.best_efforts;
+        // console.log(limits)
+        //do something with your payload, track rate limits
+        for (var j = 0; j < bestLoop.length; j++) {
+          bestAll.push([bestLoop[j].name, bestLoop[j].moving_time])
+        }
+      });
+      console.log(bestAll)
+    }
 
-});
+  });
 })
 
 
 app.get('/logout', function(req, res){
+  // strava.oauth.deauthorize({id:26705652}, function(err, payload, limits){});
+
   req.logout();
   res.redirect('/');
 });

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+</head>
+<body>
+  
+<table id="example" class="display" cellspacing="0">
+  <thead>
+    <th>dist</th>
+    <th>time</th>
+  </thead>
+    <tbody>
+
+    <%  for (var i = 0; i < bestData.length; i++) { %>
+      <tr>
+        <td><%= bestData[i].name %></td>
+        <td><%= bestData[i].moving_time %></td>
+      </tr>
+    <% } %>
+
+
+
+    </tbody>
+</table>
+
+  <script
+    src="https://code.jquery.com/jquery-1.12.4.min.js"
+    integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+    crossorigin="anonymous">
+  </script>
+
+  <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js">
+  </script>
+
+  <script>
+  $(document).ready(function() {
+      $('#example').DataTable();
+  } );
+  </script>
+
+</body>
+</html>
