@@ -137,7 +137,7 @@ app.get('/one_act', ensureAuthenticated, function(req,res){
 
 
 app.get('/all', ensureAuthenticated, function (req, res) {
-  request(`https://www.strava.com/api/v3/athlete/activities?per_page=10&access_token=${STRAVA_ACCESS_TOKEN}`, function (error, response, body) {
+  request(`https://www.strava.com/api/v3/athlete/activities?per_page=100&access_token=${STRAVA_ACCESS_TOKEN}`, function (error, response, body) {
     // console.log('error:', error); // Print the error if one occurred
     // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
     // console.log('body:', body); // Print the HTML for the Google homepage.
@@ -186,7 +186,7 @@ app.get('/all', ensureAuthenticated, function (req, res) {
         // console.log(bests4run)
         allRuns.push(tempArr);
         //console.log(allRuns)
-        if (allRuns.length >= 5) {
+        if (allRuns.length >= activityIds.length) {
           res.render('all', {
             allRuns: allRuns
           })
