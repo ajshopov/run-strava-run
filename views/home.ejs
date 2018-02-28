@@ -53,5 +53,38 @@
 
 <h3>Your Personal Bests</h3>
 table
-
+<table id="example" class="display" cellspacing="0">
+</table>
 <h3>Detailed Summary</h3>
+
+
+
+
+<script
+  src="https://code.jquery.com/jquery-1.12.4.min.js"
+  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+  crossorigin="anonymous">
+</script>
+
+<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js">
+</script>
+
+<script>
+var allRuns = <%- JSON.stringify(allRuns) %>
+console.log(allRuns)
+$(document).ready(function() {
+  $('#example').DataTable({
+    data: allRuns,
+    columns: [
+      {title: "ID"},
+      {title: "400m","defaultContent": ""},
+      {title: "1/2mil","defaultContent": ""},
+      {title: "1km","defaultContent": ""},
+      {title: "1mil","defaultContent": ""},
+      {title: "2mil","defaultContent": ""},
+      {title: "5km","defaultContent": ""},
+      {title: "10km","defaultContent": ""}
+    ]
+  });
+});
+</script>
