@@ -229,7 +229,7 @@ app.get('/home', ensureAuthenticated, function (req, res) {
   //add id first col
             tempArr.push(payload.id)
             tempArr.push(payload.kudos_count)
-            tempArr.push(moment(payload.start_date_local).subtract(payload.utc_offset, 'seconds').format('MMM Do, YYYY'))
+            tempArr.push(moment(payload.start_date_local).subtract(payload.utc_offset, 'seconds').format('hh:mm a - MMM Do, YYYY'))
             tempArr.push(payload.distance)
             tempArr.push(payload.moving_time)
 
