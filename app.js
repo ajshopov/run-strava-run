@@ -4,7 +4,7 @@ var passport = require('passport');
 // var util = require('util')
 var StravaStrategy = require('passport-strava-oauth2').Strategy;
 var app = express();
-// const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 var strava = require('strava-v3');
 var request = require('request');
 // let cors = require('cors')
@@ -301,8 +301,8 @@ app.get('/logout', function(req, res){
   //       })
   // })
 
-app.listen(3000, function(){
-  console.log(`listening on port 3000`);
+app.listen(PORT, function(){
+  console.log(`listening on port ${PORT}`);
 }); 
 
 
