@@ -51,25 +51,29 @@
   </div>
 </div>
 
-<h3>Your Personal Bests</h3>
+<div class="divider"></div>
 
-<table id="pb-table" class="display" cellspacing="0">
-</table>
+<h3 class="center">Your Personal Bests</h3>
+<div class="container">
+  <table id="pb-table" class="display" cellspacing="0"></table>
+</div>
 
-<h3>Detailed Summary</h3>
+<div class="divider"></div>
+
+<h3 class="center">Detailed Summary</h3>
 <div>
-  toggle column:
+  Toggle columns:
   <a class="toggle-vis" data-column="0">ID</a> -
-  <a class="toggle-vis" data-column="1">Kudos</a>
-  <a class="toggle-vis" data-column="2">Date</a>
-  <a class="toggle-vis" data-column="3">Length of Run</a>
-  <a class="toggle-vis" data-column="4">Total time</a>
-  <a class="toggle-vis" data-column="5">400m</a>
-  <a class="toggle-vis" data-column="6">1/2mil</a>
-  <a class="toggle-vis" data-column="7">1km</a>
-  <a class="toggle-vis" data-column="8">1mil</a>
-  <a class="toggle-vis" data-column="9">2mil</a>
-  <a class="toggle-vis" data-column="10">5km</a>
+  <a class="toggle-vis" data-column="1">Kudos</a> -
+  <a class="toggle-vis" data-column="2">Date</a> -
+  <a class="toggle-vis" data-column="3">Length of Run</a> -
+  <a class="toggle-vis" data-column="4">Total time</a> -
+  <a class="toggle-vis" data-column="5">400m</a> -
+  <a class="toggle-vis" data-column="6">1/2mil</a> -
+  <a class="toggle-vis" data-column="7">1km</a> -
+  <a class="toggle-vis" data-column="8">1mil</a> -
+  <a class="toggle-vis" data-column="9">2mil</a> -
+  <a class="toggle-vis" data-column="10">5km</a> -
   <a class="toggle-vis" data-column="11">10km</a>
 </div>
 
@@ -115,16 +119,27 @@
     });
 
     var pbTable = $('#pb-table').DataTable({
+      order: [[ 0, "asc" ]],
+      columnDefs: [
+            {
+                "targets": [ 0 ],
+                "visible": false,
+                "searchable": false
+            }
+      ],
       data: pbTableData,
       columns: [
         {title: "0"},
-        {title: "1"},
-        {title: "2"},
-        {title: "3"},
-        {title: "4"},
-        {title: "5"},
-        {title: "6"}
-      ]
+        {title: "Distance"},
+        {title: "Time"},
+        {title: "Pace"},
+        {title: "Activity_ID"},
+        {title: "Date"}
+      ],
+      paging: false,
+      ordering: false,
+      info: false,
+      searching: false
     });
 
     $('a.toggle-vis').on( 'click', function (e) {

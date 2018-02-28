@@ -159,6 +159,9 @@ var pbTable = [];
 var best400 = 99999;
 var bestHalfMile = 99999;
 var best1k = 99999;
+var best1Mile = 99999;
+var best2Mile = 99999;
+
 var tempArr;
 
 
@@ -227,9 +230,8 @@ app.get('/home', ensureAuthenticated, function (req, res) {
             tempArr.push(payload.start_date_local)
             tempArr.push(payload.distance)
             tempArr.push(payload.moving_time)
-            // console.log(limits)
-            //do something with your payload, track rate limits
-  // loop through best efforts and take seconds
+
+  // loop through best efforts and take seconds, also check if best time
             for (var j = 0; j < bestEffortsLoop.length; j++) {
               tempArr.push(bestEffortsLoop[j].moving_time)
               switch (bestEffortsLoop[j].name){
@@ -241,6 +243,12 @@ app.get('/home', ensureAuthenticated, function (req, res) {
                   break;
                 case "1k":
                   runBest1k(bestEffortsLoop[j]);
+                  break;
+                case "1 mile":
+                  runBest1mil(bestEffortsLoop[j]);
+                  break;
+                case "2 mile":
+                  runBest2mil(bestEffortsLoop[j]);
                   break;
               }
             }
@@ -293,9 +301,7 @@ app.listen(3000, function(){
 function runBest400(effort){
   if (effort.moving_time < best400){
     best400 = effort.moving_time;
-    pbTable[0] = tempArr;
-    // pbTable[0].unshift('400m')
-    // pbTable[0].unshift(0)
+    pbTable[0] = [0, '400m', effort.moving_time, 'pace', tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -303,7 +309,7 @@ function runBest400(effort){
 function runBestHalfMile(effort){
   if (effort.moving_time < bestHalfMile){
     bestHalfMile = effort.moving_time;
-    pbTable[1] = tempArr;
+    pbTable[1] = [1, '1/2 mile', effort.moving_time, 'pace', tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -311,7 +317,23 @@ function runBestHalfMile(effort){
 function runBest1k(effort){
   if (effort.moving_time < best1k){
     best1k = effort.moving_time;
-    pbTable[2] = tempArr;
+    pbTable[2] = [2, '1km', effort.moving_time, 'pace', tempArr[0], tempArr[2]];
+    console.log(pbTable);
+  };
+}
+
+function runBest1mil(effort){
+  if (effort.moving_time < best1Mile){
+    best1Mile = effort.moving_time;
+    pbTable[3] = [3, '1 mile', effort.moving_time, 'pace', tempArr[0], tempArr[2]];
+    console.log(pbTable);
+  };
+}
+
+function runBest2mil(effort){
+  if (effort.moving_time < best1k){
+    best1k = effort.moving_time;
+    pbTable[4] = [4, '2 mile', effort.moving_time, 'pace', tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
