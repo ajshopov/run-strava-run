@@ -92,6 +92,7 @@ app.get('/auth/strava/callback',
 
 
 app.get('/home', ensureAuthenticated, function (req, res) {
+  console.log(req.user)
   // strava.athletes.get({id: 26705652},function(err,payload,limits) {
   //   //do something with your payload, track rate limits
   //   console.log(err)
@@ -99,13 +100,27 @@ app.get('/home', ensureAuthenticated, function (req, res) {
   //   console.log(payload)
   //   appData = payload
   // });
+  var args = {
+    id:req.user.id, 'access_token':STRAVA_ACCESS_TOKEN
+  }
+  strava.athletes.stats(args,function(err, payload, limits){
+    var fourWkTotal = payload.recent_run_totals;
+    var ytdTotal = payload.ytd_run_totals;
+    var allRunTotal = payload.all_run_totals;
 
-  // strava.athletes.stats(args,function(err, payload, limits){
-  //   console.log(payload)
-  // })
+    console.log(fourWkTotal)
+    console.log(ytdTotal)
+    console.log(allRunTotal)
 
-  res.render('home',{ user: req.user })
+    res.render('home', { 
+      user: req.user,
+      fourWkTotal: fourWkTotal,
+      ytdTotal: ytdTotal,
+      allRunTotal: allRunTotal
+      })
 
+
+  })
 
   // console.log(req.user)
   // res.json(appData)
