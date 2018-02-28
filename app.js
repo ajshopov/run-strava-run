@@ -92,7 +92,7 @@ app.get('/auth/strava/callback',
 
 
 app.get('/home', ensureAuthenticated, function (req, res) {
-  console.log(req.user)
+  console.log(req.user._json)
   // strava.athletes.get({id: 26705652},function(err,payload,limits) {
   //   //do something with your payload, track rate limits
   //   console.log(err)
@@ -113,7 +113,7 @@ app.get('/home', ensureAuthenticated, function (req, res) {
     console.log(allRunTotal)
 
     res.render('home', { 
-      user: req.user,
+      user: req.user._json,
       fourWkTotal: fourWkTotal,
       ytdTotal: ytdTotal,
       allRunTotal: allRunTotal

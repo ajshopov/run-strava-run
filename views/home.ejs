@@ -1,44 +1,57 @@
 <div class="row">
-  <div class="col s2 home-header">
-    <img src="<%= user.photos[0].value %>">
+  <div class="col s3 home-header">
+    <img src="<%= user.profile %>">
+    <p>logged in as:</p>
+    <p><%= user.firstname %> <%= user.lastname %></p>
+    <p><%= user.id %></p>
+    <p><%= user.email %></p>
   </div>
-  <div class="col s8 home-header">
-    <h2>home page</h2>
-    <p>stats list</p>
-    <table>
-      <thead>
-        <tr>
-          <th>run totals</th>
-          <th>past 4 weeks</th>
-          <th>ytd runs</th>
-          <th>all time</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td width="25%">Count</td>
-          <td width="25%"><%= fourWkTotal.count %></td>
-          <td width="25%"><%= ytdTotal.count %></td>
-          <td width="25%"><%= allRunTotal.count %></td>
-        </tr>
-        <tr>
-          <td>Distance</td>
-          <td><%= fourWkTotal.distance.toFixed(0) %></td>
-          <td><%= ytdTotal.distance %></td>
-          <td><%= allRunTotal.distance %></td>
-        </tr>
-        <tr>
-          <td>Moving Time</td>
-          <td><%= fourWkTotal.moving_time %></td>
-          <td><%= ytdTotal.moving_time %></td>
-          <td><%= allRunTotal.moving_time %></td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="col s6 home-header">
+    <h2>Your Dashboard</h2>
+    <div class="section">
+      <table>
+        <thead>
+          <tr>
+            <th>run totals</th>
+            <th>past 4 weeks</th>
+            <th>ytd runs</th>
+            <th>all time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td width="25%">Count</td>
+            <td width="25%"><%= fourWkTotal.count %></td>
+            <td width="25%"><%= ytdTotal.count %></td>
+            <td width="25%"><%= allRunTotal.count %></td>
+          </tr>
+          <tr>
+            <td>Distance (m)</td>
+            <td><%= fourWkTotal.distance.toFixed(0) %></td>
+            <td><%= ytdTotal.distance %></td>
+            <td><%= allRunTotal.distance %></td>
+          </tr>
+          <tr>
+            <td>Moving Time (s)</td>
+            <td><%= fourWkTotal.moving_time %></td>
+            <td><%= ytdTotal.moving_time %></td>
+            <td><%= allRunTotal.moving_time %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <div class="col s2 home-header">
-    <a class="a-link-button" href="/logout">logout</a>
+  <div class="col s3 home-header">
+    <a class="waves-effect waves-light btn-large" href="/logout">logout</a>
     <p>personal details</p>
+    <p>followers: <%= user.follower_count %></p>
+    <p>following: <%= user.friend_count %></p>
+    <p>premium member? <%= user.premium %></p>
+    <p>profile created: <%= user.created_at %></p>
   </div>
 </div>
 
+<h3>Your Personal Bests</h3>
+table
+
+<h3>Detailed Summary</h3>
