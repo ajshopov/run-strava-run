@@ -53,9 +53,25 @@
 
 <h3>Your Personal Bests</h3>
 table
+<h3>Detailed Summary</h3>
+<div>
+  toggle column:
+  <a class="toggle-vis" data-column="0">ID</a> -
+  <a class="toggle-vis" data-column="1">Kudos</a>
+  <a class="toggle-vis" data-column="2">Date</a>
+  <a class="toggle-vis" data-column="3">Length of Run</a>
+  <a class="toggle-vis" data-column="4">Total time</a>
+  <a class="toggle-vis" data-column="5">400m</a>
+  <a class="toggle-vis" data-column="6">1/2mil</a>
+  <a class="toggle-vis" data-column="7">1km</a>
+  <a class="toggle-vis" data-column="8">1mil</a>
+  <a class="toggle-vis" data-column="9">2mil</a>
+  <a class="toggle-vis" data-column="10">5km</a>
+  <a class="toggle-vis" data-column="11">10km</a>
+</div>
+
 <table id="example" class="display" cellspacing="0">
 </table>
-<h3>Detailed Summary</h3>
 
 
 
@@ -73,10 +89,15 @@ table
 var allRuns = <%- JSON.stringify(allRuns) %>
 console.log(allRuns)
 $(document).ready(function() {
-  $('#example').DataTable({
+  var table = $('#example').DataTable({
+    paging: false,
     data: allRuns,
     columns: [
       {title: "ID"},
+      {title: "Kudos"},
+      {title: "Date"},
+      {title: "Length of Run"},
+      {title: "Total time"},
       {title: "400m","defaultContent": ""},
       {title: "1/2mil","defaultContent": ""},
       {title: "1km","defaultContent": ""},
@@ -85,6 +106,16 @@ $(document).ready(function() {
       {title: "5km","defaultContent": ""},
       {title: "10km","defaultContent": ""}
     ]
+  });
+
+  $('a.toggle-vis').on( 'click', function (e) {
+      e.preventDefault();
+
+      // Get the column API object
+      var column = table.column( $(this).attr('data-column') );
+
+      // Toggle the visibility
+      column.visible( ! column.visible() );
   });
 });
 </script>

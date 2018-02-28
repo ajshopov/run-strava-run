@@ -118,8 +118,6 @@ app.get('/old_home', ensureAuthenticated, function (req, res) {
       ytdTotal: ytdTotal,
       allRunTotal: allRunTotal
       })
-
-
   })
 
   // console.log(req.user)
@@ -167,7 +165,6 @@ app.get('/home', ensureAuthenticated, function (req, res) {
     var allRunTotal = payload.all_run_totals;
 
 
-
       request(`https://www.strava.com/api/v3/athlete/activities?per_page=100&access_token=${STRAVA_ACCESS_TOKEN}`, function (error, response, body) {
         // console.log('error:', error); // Print the error if one occurred
         // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
@@ -197,26 +194,31 @@ app.get('/home', ensureAuthenticated, function (req, res) {
             // console.log(err)
 
             console.log(payload.id)
-            // console.log(payload.best_efforts)
+
             var bestLoop = payload.best_efforts;
             // console.log(bestLoop[0])
             // console.log(bestLoop[1])
             // console.log(bestLoop.length)
-
-            // bests4run.push([bestLoop[0].name, bestLoop[0].moving_time])
-            console.log('debug?')
+           console.log('debug?')
             var tempArr = [];
+  //add id first col
             tempArr.push(payload.id)
+            tempArr.push(payload.kudos_count)
+            tempArr.push(payload.start_date_local)
+            tempArr.push(payload.distance)
+            tempArr.push(payload.moving_time)
             // console.log(limits)
             //do something with your payload, track rate limits
-
+  // loop through best efforts and take seconds
             for (var j = 0; j < bestLoop.length; j++) {
               tempArr.push(bestLoop[j].moving_time)
             }
             // bests4run.push(tempArr)
             // console.log(bests4run)
+  //push to table
             allRuns.push(tempArr);
             //console.log(allRuns)
+
             if (allRuns.length >= activityIds.length) {
               res.render('home', {
                 allRuns: allRuns,
@@ -231,7 +233,6 @@ app.get('/home', ensureAuthenticated, function (req, res) {
 
         };
 
-
       });
   })
 })
@@ -239,7 +240,6 @@ app.get('/home', ensureAuthenticated, function (req, res) {
 
 app.get('/logout', function(req, res){
   // strava.oauth.deauthorize({id:26705652}, function(err, payload, limits){});
-
   req.logout();
   res.redirect('/');
 });
@@ -256,8 +256,6 @@ app.get('/logout', function(req, res){
 app.listen(3000, function(){
   console.log(`listening on port 3000`);
 }); 
-
-
 
 
 

@@ -19,13 +19,15 @@
 
 <script>
 var dataSet = <%- JSON.stringify(dataSet) %>
+var table;
 $(document).ready(function() {
-  var table = $('#example').DataTable({
+  table = $('#example').DataTable({
     data: dataSet,
     columns: [
       {title: "Dist"},
       {title: "Time"}
-    ]
+    ],
+    paging: false
   });
   $('a.toggle-vis').on( 'click', function (e) {
       e.preventDefault();
