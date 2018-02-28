@@ -9,6 +9,7 @@ var strava = require('strava-v3');
 var request = require('request');
 // let cors = require('cors')
 // app.use(cors());
+var moment = require('moment');
 
 var STRAVA_ACCESS_TOKEN = process.env.STRAVA_ACCESS_TOKEN;
 var STRAVA_CLIENT_ID = process.env.STRAVA_CLIENT_ID
@@ -129,6 +130,7 @@ app.get('/old_home', ensureAuthenticated, function (req, res) {
 
 
 app.get('/one_act', ensureAuthenticated, function(req,res){
+  // console.log(moment('2017-12-16T12:02:37Z').format('MMM Do, YYYY'))
   var args = {
     id:1424416003, 'access_token':STRAVA_ACCESS_TOKEN
   }
@@ -170,8 +172,6 @@ var tempArr;
 app.get('/home', ensureAuthenticated, function (req, res) {
   console.log(req.user.id)
 
-  console.log('debug line173')
-  console.log(accessTkn)
   var args = {
     id:req.user.id, 'access_token':accessTkn
   }
@@ -229,7 +229,7 @@ app.get('/home', ensureAuthenticated, function (req, res) {
   //add id first col
             tempArr.push(payload.id)
             tempArr.push(payload.kudos_count)
-            tempArr.push(payload.start_date_local)
+            tempArr.push(moment(payload.start_date_local).subtract(payload.utc_offset, 'seconds').format('MMM Do, YYYY'))
             tempArr.push(payload.distance)
             tempArr.push(payload.moving_time)
 
