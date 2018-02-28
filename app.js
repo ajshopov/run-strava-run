@@ -100,6 +100,10 @@ app.get('/home', ensureAuthenticated, function (req, res) {
   //   appData = payload
   // });
 
+  // strava.athletes.stats(args,function(err, payload, limits){
+  //   console.log(payload)
+  // })
+
   res.render('home',{ user: req.user })
 
 
