@@ -36,6 +36,8 @@ img {
 
 .splash-container{
   height: 600px;
+  background-image: url(/images/lucas-favre-335248-unsplash.jpg);
+  background-size: cover;
 }
 
 .splash {
@@ -44,8 +46,9 @@ img {
   top: 10%;
   left: 50%;
   width: 500px;
-  height: 310px;
+  height: 330px;
   margin-left: -250px;
+  background-color: rgba(238, 238, 238, 0.5)
   /*border: 5px solid black;*/
 }
 

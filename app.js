@@ -153,6 +153,10 @@ app.get('/one_act', ensureAuthenticated, function(req,res){
   // res.json(req.user)
 })
 
+var pbTable = [];
+var best400 = 99999;
+var tempArr;
+
 
 app.get('/home', ensureAuthenticated, function (req, res) {
 
@@ -188,10 +192,10 @@ app.get('/home', ensureAuthenticated, function (req, res) {
         console.log(typeof(activityIds[0]))
 
         var allRuns = [];
+
         for (var i = 0; i < activityIds.length; i++) {
           
           strava.activities.get({id:activityIds[i], 'access_token':STRAVA_ACCESS_TOKEN},function(err,payload,limits) {
-            // console.log(err)
 
             console.log(payload.id)
 
@@ -200,7 +204,7 @@ app.get('/home', ensureAuthenticated, function (req, res) {
             // console.log(bestLoop[1])
             // console.log(bestLoop.length)
            console.log('debug?')
-            var tempArr = [];
+            tempArr = [];
   //add id first col
             tempArr.push(payload.id)
             tempArr.push(payload.kudos_count)
@@ -212,6 +216,16 @@ app.get('/home', ensureAuthenticated, function (req, res) {
   // loop through best efforts and take seconds
             for (var j = 0; j < bestLoop.length; j++) {
               tempArr.push(bestLoop[j].moving_time)
+              
+              runBest400(bestLoop[j]);
+              // if (bestLoop[j].name === "400m") {
+              //   if (bestLoop[j].moving_time < best400){
+              //     best400 = bestLoop[j].moving_time;
+              //     pbTable.push(tempArr);
+              //     console.log(pbTable);
+              //   };
+              // }
+
             }
             // bests4run.push(tempArr)
             // console.log(bests4run)
@@ -220,12 +234,14 @@ app.get('/home', ensureAuthenticated, function (req, res) {
             //console.log(allRuns)
 
             if (allRuns.length >= activityIds.length) {
+              console.log(pbTable)
               res.render('home', {
                 allRuns: allRuns,
                 user: req.user._json,
                 fourWkTotal: fourWkTotal,
                 ytdTotal: ytdTotal,
-                allRunTotal: allRunTotal
+                allRunTotal: allRunTotal,
+                pbTableData: pbTable
               })
             }
 
@@ -258,7 +274,15 @@ app.listen(3000, function(){
 }); 
 
 
-
+function runBest400(effort){
+  if (effort.name === "400m") {
+    if (effort.moving_time < best400){
+      best400 = effort.moving_time;
+      pbTable[0] = tempArr;
+      console.log(pbTable);
+    };
+  }
+}
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
