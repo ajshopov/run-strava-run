@@ -157,6 +157,8 @@ app.get('/one_act', ensureAuthenticated, function(req,res){
 
 var pbTable = [];
 var best400 = 99999;
+var bestHalfMile = 99999;
+var best1k = 99999;
 var tempArr;
 
 
@@ -213,10 +215,10 @@ app.get('/home', ensureAuthenticated, function (req, res) {
 
             console.log(payload.id)
 
-            var bestLoop = payload.best_efforts;
-            // console.log(bestLoop[0])
-            // console.log(bestLoop[1])
-            // console.log(bestLoop.length)
+            var bestEffortsLoop = payload.best_efforts;
+            // console.log(bestEffortsLoop[0])
+            // console.log(bestEffortsLoop[1])
+            // console.log(bestEffortsLoop.length)
            console.log('debug?')
             tempArr = [];
   //add id first col
@@ -228,10 +230,19 @@ app.get('/home', ensureAuthenticated, function (req, res) {
             // console.log(limits)
             //do something with your payload, track rate limits
   // loop through best efforts and take seconds
-            for (var j = 0; j < bestLoop.length; j++) {
-              tempArr.push(bestLoop[j].moving_time)
-              
-              runBest400(bestLoop[j]);
+            for (var j = 0; j < bestEffortsLoop.length; j++) {
+              tempArr.push(bestEffortsLoop[j].moving_time)
+              switch (bestEffortsLoop[j].name){
+                case "400m":
+                  runBest400(bestEffortsLoop[j]);
+                  break;
+                case "1/2 mile":
+                  runBestHalfMile(bestEffortsLoop[j]);
+                  break;
+                case "1k":
+                  runBest1k(bestEffortsLoop[j]);
+                  break;
+              }
             }
 
   //push to table
@@ -280,15 +291,29 @@ app.listen(3000, function(){
 
 
 function runBest400(effort){
-  if (effort.name === "400m") {
-    if (effort.moving_time < best400){
-      best400 = effort.moving_time;
-      pbTable[0] = tempArr;
-      // pbTable[0].unshift('400m')
-      // pbTable[0].unshift(0)
-      console.log(pbTable);
-    };
-  }
+  if (effort.moving_time < best400){
+    best400 = effort.moving_time;
+    pbTable[0] = tempArr;
+    // pbTable[0].unshift('400m')
+    // pbTable[0].unshift(0)
+    console.log(pbTable);
+  };
+}
+
+function runBestHalfMile(effort){
+  if (effort.moving_time < bestHalfMile){
+    bestHalfMile = effort.moving_time;
+    pbTable[1] = tempArr;
+    console.log(pbTable);
+  };
+}
+
+function runBest1k(effort){
+  if (effort.moving_time < best1k){
+    best1k = effort.moving_time;
+    pbTable[2] = tempArr;
+    console.log(pbTable);
+  };
 }
 
 function ensureAuthenticated(req, res, next) {
