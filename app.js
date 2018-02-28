@@ -34,6 +34,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 var appData;
+var accessTkn;
 
 passport.use(new StravaStrategy({
     clientID: STRAVA_CLIENT_ID,
@@ -41,6 +42,8 @@ passport.use(new StravaStrategy({
     callbackURL: "http://127.0.0.1:3000/auth/strava/callback"
   },
   function(accessToken, refreshToken, profile, done) {
+    console.log(accessToken)
+    accessTkn = accessToken
     // asynchronous verification, for effect...
     process.nextTick(function () {
       
@@ -100,17 +103,16 @@ app.get('/old_home', ensureAuthenticated, function (req, res) {
   //   console.log(payload)
   //   appData = payload
   // });
+
   var args = {
-    id:req.user.id, 'access_token':STRAVA_ACCESS_TOKEN
+    id:req.user.id, 'access_token':accessTkn
   }
   strava.athletes.stats(args,function(err, payload, limits){
+    
+
     var fourWkTotal = payload.recent_run_totals;
     var ytdTotal = payload.ytd_run_totals;
     var allRunTotal = payload.all_run_totals;
-
-    console.log(fourWkTotal)
-    console.log(ytdTotal)
-    console.log(allRunTotal)
 
     res.render('home', { 
       user: req.user._json,
@@ -159,17 +161,29 @@ var tempArr;
 
 
 app.get('/home', ensureAuthenticated, function (req, res) {
+  console.log(req.user.id)
 
+  console.log('debug line173')
+  console.log(accessTkn)
   var args = {
-    id:req.user.id, 'access_token':STRAVA_ACCESS_TOKEN
+    id:req.user.id, 'access_token':accessTkn
   }
   strava.athletes.stats(args,function(err, payload, limits){
+
+    console.log(err)
+    console.log(payload)
+    console.log(limits)
+
     var fourWkTotal = payload.recent_run_totals;
     var ytdTotal = payload.ytd_run_totals;
     var allRunTotal = payload.all_run_totals;
 
+    console.log(fourWkTotal)
+    console.log(ytdTotal)
+    console.log(allRunTotal)
 
-      request(`https://www.strava.com/api/v3/athlete/activities?per_page=100&access_token=${STRAVA_ACCESS_TOKEN}`, function (error, response, body) {
+
+      request(`https://www.strava.com/api/v3/athlete/activities?per_page=100&access_token=${accessTkn}`, function (error, response, body) {
         // console.log('error:', error); // Print the error if one occurred
         // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
         // console.log('body:', body); // Print the HTML for the Google homepage.
@@ -195,7 +209,7 @@ app.get('/home', ensureAuthenticated, function (req, res) {
 
         for (var i = 0; i < activityIds.length; i++) {
           
-          strava.activities.get({id:activityIds[i], 'access_token':STRAVA_ACCESS_TOKEN},function(err,payload,limits) {
+          strava.activities.get({id:activityIds[i], 'access_token':accessTkn},function(err,payload,limits) {
 
             console.log(payload.id)
 
