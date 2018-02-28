@@ -218,17 +218,8 @@ app.get('/home', ensureAuthenticated, function (req, res) {
               tempArr.push(bestLoop[j].moving_time)
               
               runBest400(bestLoop[j]);
-              // if (bestLoop[j].name === "400m") {
-              //   if (bestLoop[j].moving_time < best400){
-              //     best400 = bestLoop[j].moving_time;
-              //     pbTable.push(tempArr);
-              //     console.log(pbTable);
-              //   };
-              // }
-
             }
-            // bests4run.push(tempArr)
-            // console.log(bests4run)
+
   //push to table
             allRuns.push(tempArr);
             //console.log(allRuns)
@@ -279,6 +270,8 @@ function runBest400(effort){
     if (effort.moving_time < best400){
       best400 = effort.moving_time;
       pbTable[0] = tempArr;
+      // pbTable[0].unshift('400m')
+      // pbTable[0].unshift(0)
       console.log(pbTable);
     };
   }
