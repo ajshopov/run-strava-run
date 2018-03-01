@@ -10,6 +10,7 @@ var request = require('request');
 // let cors = require('cors')
 // app.use(cors());
 var moment = require('moment');
+var momentDurationFormatSetup = require("moment-duration-format");
 
 var STRAVA_ACCESS_TOKEN = process.env.STRAVA_ACCESS_TOKEN;
 var STRAVA_CLIENT_ID = process.env.STRAVA_CLIENT_ID
@@ -40,7 +41,7 @@ var accessTkn;
 passport.use(new StravaStrategy({
     clientID: STRAVA_CLIENT_ID,
     clientSecret: STRAVA_CLIENT_SECRET,
-    callbackURL: "http://therunningman.herokuapp.com/auth/strava/callback"
+    callbackURL: "http://127.0.0.1:3000/auth/strava/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     console.log(accessToken)
@@ -56,8 +57,6 @@ passport.use(new StravaStrategy({
     });
   }
 ));
-
-
 
 
 // strava.oauth.getRequestAccessURL({STRAVA_ACCESS_TOKEN, STRAVA_CLIENT_SECRET, STRAVA_CLIENT_ID, STRAVA_REDIRECT_URI})
@@ -95,37 +94,37 @@ app.get('/auth/strava/callback',
 
 
 
-app.get('/old_home', ensureAuthenticated, function (req, res) {
-  console.log(req.user._json)
-  // strava.athletes.get({id: 26705652},function(err,payload,limits) {
-  //   //do something with your payload, track rate limits
-  //   console.log(err)
-  //   console.log(limits)
-  //   console.log(payload)
-  //   appData = payload
-  // });
+// app.get('/old_home', ensureAuthenticated, function (req, res) {
+//   console.log(req.user._json)
+//   // strava.athletes.get({id: 26705652},function(err,payload,limits) {
+//   //   //do something with your payload, track rate limits
+//   //   console.log(err)
+//   //   console.log(limits)
+//   //   console.log(payload)
+//   //   appData = payload
+//   // });
 
-  var args = {
-    id:req.user.id, 'access_token':accessTkn
-  }
-  strava.athletes.stats(args,function(err, payload, limits){
+//   var args = {
+//     id:req.user.id, 'access_token':accessTkn
+//   }
+//   strava.athletes.stats(args,function(err, payload, limits){
     
 
-    var fourWkTotal = payload.recent_run_totals;
-    var ytdTotal = payload.ytd_run_totals;
-    var allRunTotal = payload.all_run_totals;
+//     var fourWkTotal = payload.recent_run_totals;
+//     var ytdTotal = payload.ytd_run_totals;
+//     var allRunTotal = payload.all_run_totals;
 
-    res.render('home', { 
-      user: req.user._json,
-      fourWkTotal: fourWkTotal,
-      ytdTotal: ytdTotal,
-      allRunTotal: allRunTotal
-      })
-  })
+//     res.render('home', { 
+//       user: req.user._json,
+//       fourWkTotal: fourWkTotal,
+//       ytdTotal: ytdTotal,
+//       allRunTotal: allRunTotal
+//       })
+//   })
 
-  // console.log(req.user)
-  // res.json(appData)
-})
+//   // console.log(req.user)
+//   // res.json(appData)
+// })
 
 
 
@@ -305,11 +304,14 @@ app.listen(PORT, function(){
   console.log(`listening on port ${PORT}`);
 }); 
 
+function secondsToMins(input){
+  return moment.duration(input, "seconds").format("m:ss")
+}
 
 function runBest400(effort){
   if (effort.moving_time < best400){
     best400 = effort.moving_time;
-    pbTable[0] = [0, '400m', effort.moving_time, 'pace', tempArr[0], tempArr[2]];
+    pbTable[0] = [0, '400m', secondsToMins(effort.moving_time), 'pace', tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -317,7 +319,7 @@ function runBest400(effort){
 function runBestHalfMile(effort){
   if (effort.moving_time < bestHalfMile){
     bestHalfMile = effort.moving_time;
-    pbTable[1] = [1, '1/2 mile', effort.moving_time, 'pace', tempArr[0], tempArr[2]];
+    pbTable[1] = [1, '1/2 mile', secondsToMins(effort.moving_time), 'pace', tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -325,7 +327,7 @@ function runBestHalfMile(effort){
 function runBest1k(effort){
   if (effort.moving_time < best1k){
     best1k = effort.moving_time;
-    pbTable[2] = [2, '1km', effort.moving_time, 'pace', tempArr[0], tempArr[2]];
+    pbTable[2] = [2, '1km', secondsToMins(effort.moving_time), 'pace', tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -333,7 +335,7 @@ function runBest1k(effort){
 function runBest1mil(effort){
   if (effort.moving_time < best1Mile){
     best1Mile = effort.moving_time;
-    pbTable[3] = [3, '1 mile', effort.moving_time, 'pace', tempArr[0], tempArr[2]];
+    pbTable[3] = [3, '1 mile', secondsToMins(effort.moving_time), 'pace', tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -341,7 +343,7 @@ function runBest1mil(effort){
 function runBest2mil(effort){
   if (effort.moving_time < best2Mile){
     best2Mile = effort.moving_time;
-    pbTable[4] = [4, '2 mile', effort.moving_time, 'pace', tempArr[0], tempArr[2]];
+    pbTable[4] = [4, '2 mile', secondsToMins(effort.moving_time), 'pace', tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -349,7 +351,7 @@ function runBest2mil(effort){
 function runBest5k(effort){
   if (effort.moving_time < best5k){
     best5k = effort.moving_time;
-    pbTable[5] = [5, '5km', effort.moving_time, 'pace', tempArr[0], tempArr[2]];
+    pbTable[5] = [5, '5km', secondsToMins(effort.moving_time), 'pace', tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -357,7 +359,7 @@ function runBest5k(effort){
 function runBest10k(effort){
   if (effort.moving_time < best10k){
     best10k = effort.moving_time;
-    pbTable[6] = [6, '10km', effort.moving_time, 'pace', tempArr[0], tempArr[2]];
+    pbTable[6] = [6, '10km', secondsToMins(effort.moving_time), 'pace', tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
