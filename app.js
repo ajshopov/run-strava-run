@@ -192,6 +192,12 @@ app.get('/home', ensureAuthenticated, function (req, res) {
     var ytdTotal = payload.ytd_run_totals;
     var allRunTotal = payload.all_run_totals;
 
+    var timeTotalsInMins = [];
+    timeTotalsInMins.push(secondsToMins(fourWkTotal.moving_time));
+    timeTotalsInMins.push(secondsToMins(ytdTotal.moving_time));
+    timeTotalsInMins.push(secondsToMins(allRunTotal.moving_time));
+
+
     console.log(fourWkTotal)
     console.log(ytdTotal)
     console.log(allRunTotal)
@@ -229,7 +235,8 @@ app.get('/home', ensureAuthenticated, function (req, res) {
               allRunTotal: allRunTotal,
               pbTableData: pbTable,
               premiumMember: premiumMember,
-              profileCreatedAt: profileCreatedAt
+              profileCreatedAt: profileCreatedAt,
+              timeTotalsInMins: timeTotalsInMins
             }
           )
         }
@@ -304,7 +311,8 @@ app.get('/home', ensureAuthenticated, function (req, res) {
                 allRunTotal: allRunTotal,
                 pbTableData: pbTable,
                 premiumMember: premiumMember,
-                profileCreatedAt: profileCreatedAt
+                profileCreatedAt: profileCreatedAt,
+                timeTotalsInMins: timeTotalsInMins
               })
             }
 
@@ -339,7 +347,7 @@ app.listen(PORT, function(){
 }); 
 
 function secondsToMins(input){
-  return moment.duration(input, "seconds").format("m:ss")
+  return moment.duration(input, "seconds").format("H:mm:ss")
 }
 
 function calcPace(dist, secs){

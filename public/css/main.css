@@ -13,6 +13,10 @@ main {
   flex-direction: column;
 }
 
+.page-footer {
+  padding: 0px;
+}
+
 .profile-pic {
   width: 70%;
   border-radius: 50%;
