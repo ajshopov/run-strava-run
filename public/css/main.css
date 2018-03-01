@@ -25,7 +25,7 @@ main {
   padding-top: 5px;
 }
 
-img {
+.profile-pic {
   width: 70%;
   border-radius: 50%;
 }
@@ -34,10 +34,25 @@ img {
   text-align: center;
 }
 
+.runman-logo{
+  height: 100%;
+}
+
+#strava-logo{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
 .splash-container{
   height: 600px;
   background-image: url(/images/lucas-favre-335248-unsplash.jpg);
   background-size: cover;
+  position: relative;
+}
+
+#nav-mobile{
+  height: inherit;
 }
 
 .splash {
@@ -53,11 +68,11 @@ img {
 }
 
 #strava-connect{
-  display: block;
-  height: 96px;
-  background-image: url(/images/btn_strava_connectwith_orange@2x.png);
-  background-position: center; 
-  background-repeat: no-repeat;
+  height: inherit;
+}
+
+#strava-connect > img {
+  height: inherit;
 }
 
 #example_length{

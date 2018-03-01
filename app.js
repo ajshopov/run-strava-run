@@ -212,6 +212,19 @@ app.get('/home', ensureAuthenticated, function (req, res) {
         console.log(activityIds[0])
         console.log(typeof(activityIds[0]))
 
+        // for no run data
+        if (activityIds.length === 0) {
+          res.render('home', {
+              allRuns: allRuns,
+              user: req.user._json,
+              fourWkTotal: fourWkTotal,
+              ytdTotal: ytdTotal,
+              allRunTotal: allRunTotal,
+              pbTableData: pbTable
+            }
+          )
+        }
+
         var allRuns = [];
 
         for (var i = 0; i < activityIds.length; i++) {
