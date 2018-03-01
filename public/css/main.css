@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   height: 100%;
   margin: 0;
@@ -55,11 +59,11 @@ main {
   font-size: 1.2em;
 }
 
-.logo-link {
+#nav-mobile{
   height: inherit;
 }
 
-#nav-mobile{
+#nav-mobile > a {
   height: inherit;
 }
 
