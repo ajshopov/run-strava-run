@@ -177,7 +177,7 @@ app.get('/about', function(req, res){
 app.get('/home', ensureAuthenticated, function (req, res) {
   console.log(req.user)
   var premiumMember = req.user.premium === true ? 'YES' : 'NO'
-  var profileCreatedAt = moment(req.user._json.created_at).format('hh:mm a DD/MM/YY')
+  var profileCreatedAt = moment(req.user._json.created_at).format('HH:mm DD/MM/YY')
 
   var args = {
     id:req.user.id, 'access_token':accessTkn
