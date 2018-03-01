@@ -1,8 +1,13 @@
+html{
+  height: 100%;
+  box-sizing: border-box;
+}
+
 body {
   display: flex;
   flex-direction: column;
-  
-  min-height: 100vh;
+  position: relative;
+  min-height: 100%;
   margin: 0;
   padding: 0;
   /*height: 100%;*/
@@ -12,17 +17,18 @@ main {
   flex: 1 0 auto;
 }
 
-
 .wrapper {
-  position: relative;
   min-height: 100%
 }
 .content {
   min-height: 100%;
-  /* Height of the footer element */
 }
 .page-footer{
   padding-top: 5px;
+  /*position: absolute;*/
+  bottom: 0;
+  right: 0;
+  left: 0;
 }
 
 .profile-pic {
@@ -36,35 +42,33 @@ main {
 
 .runman-logo{
   height: 100%;
+  margin-left: 3%;
 }
 
 #strava-logo{
   position: absolute;
   bottom: 0;
   right: 0;
+  width: 15%;
 }
 
 .splash-container{
-  height: 600px;
+  height: 90vh;
+  position: relative;
+  text-align: center;
   background-image: url(/images/lucas-favre-335248-unsplash.jpg);
   background-size: cover;
-  position: relative;
+}
+
+.splash-container > p{
+  margin: 0;
+  padding-top: 10px;
+  color: #fafafa;
+  font-size: 1.2em;
 }
 
 #nav-mobile{
   height: inherit;
-}
-
-.splash {
-  text-align: center;
-  position: fixed;
-  top: 10%;
-  left: 50%;
-  width: 500px;
-  height: 330px;
-  margin-left: -250px;
-  background-color: rgba(238, 238, 238, 0.5)
-  /*border: 5px solid black;*/
 }
 
 #strava-connect{
