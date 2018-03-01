@@ -135,10 +135,7 @@ app.get('/one_act', ensureAuthenticated, function(req,res){
     id:1424416003, 'access_token':STRAVA_ACCESS_TOKEN
   }
   strava.activities.get(args,function(err,payload,limits) {
-    // console.log(err)
-    // console.log(payload)
-    // console.log(limits)
-    //do something with your payload, track rate limits 
+
     // res.json(payload)
     // console.log(payload.best_efforts)
     var bestData = payload.best_efforts
@@ -157,15 +154,15 @@ app.get('/one_act', ensureAuthenticated, function(req,res){
   // res.json(req.user)
 })
 
-var pbTable = [];
-var best400 = 99999;
-var bestHalfMile = 99999;
-var best1k = 99999;
-var best1Mile = 99999;
-var best2Mile = 99999;
-var best5k = 99999;
-var best10k = 99999;
-var best15k = 99999;
+var pbTable;
+var best400;
+var bestHalfMile;
+var best1k;
+var best1Mile;
+var best2Mile;
+var best5k;
+var best10k;
+var best15k;
 
 var tempArr;
 
@@ -175,10 +172,21 @@ app.get('/about', function(req, res){
 
 
 app.get('/home', ensureAuthenticated, function (req, res) {
+
+  pbTable = [];
+  best400 = 99999;
+  bestHalfMile = 99999;
+  best1k = 99999;
+  best1Mile = 99999;
+  best2Mile = 99999;
+  best5k = 99999;
+  best10k = 99999;
+  best15k = 99999;
+
   console.log(req.user)
   var premiumMember = req.user.premium === true ? 'YES' : 'NO'
   var profileCreatedAt = moment(req.user._json.created_at).format('HH:mm DD/MM/YY')
-
+  
   var args = {
     id:req.user.id, 'access_token':accessTkn
   }
