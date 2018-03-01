@@ -14,3 +14,4 @@
 - passport-strava (courtesy of [millsy](https://github.com/millsy/passport-strava))
 - DataTables jQuery plug-in
 
+![Screenshot Home Page](/images/splash.png)
