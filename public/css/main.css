@@ -1,35 +1,15 @@
-html{
-  height: 100%;
-  box-sizing: border-box;
-}
-
 body {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  min-height: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
-  /*height: 100%;*/
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
-main {
-  flex: 1 0 auto;
-}
-
-.wrapper {
-  min-height: 100%
-}
-.content {
-  min-height: 100%;
-}
-.page-footer{
-  padding-top: 0px;
-  /*position: absolute;*/
-  bottom: 0;
-  right: 0;
-  left: 0;
-}
+ main {
+    flex: 1 0 auto;
+  }
 
 .profile-pic {
   width: 70%;
@@ -41,8 +21,8 @@ main {
 }
 
 .runman-logo{
-  height: 100%;
-  margin-left: 3%;
+  height: 96px;
+  margin-left: 5%;
 }
 
 #strava-logo{
