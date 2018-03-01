@@ -164,6 +164,7 @@ var best1Mile = 99999;
 var best2Mile = 99999;
 var best5k = 99999;
 var best10k = 99999;
+var best15k = 99999;
 
 var tempArr;
 
@@ -226,15 +227,15 @@ app.get('/home', ensureAuthenticated, function (req, res) {
            console.log('debug?')
             tempArr = [];
   //add id first col
-            tempArr.push(payload.id)
+            tempArr.push(`<a href="http://www.strava.com/activities/${payload.id}" target="_blank">${payload.id}</a>`)
             tempArr.push(payload.kudos_count)
-            tempArr.push(moment(payload.start_date_local).subtract(payload.utc_offset, 'seconds').format('hh:mm a - MMM Do, YYYY'))
+            tempArr.push(moment(payload.start_date_local).subtract(payload.utc_offset, 'seconds').format('YYYY MMM Do - hh:mm a'))
             tempArr.push(payload.distance)
-            tempArr.push(payload.moving_time)
+            tempArr.push(secondsToMins(payload.moving_time));
 
   // loop through best efforts and take no. seconds, also check if best time
             for (var j = 0; j < bestEffortsLoop.length; j++) {
-              tempArr.push(bestEffortsLoop[j].moving_time)
+              tempArr.push(secondsToMins(bestEffortsLoop[j].moving_time));
               switch (bestEffortsLoop[j].name){
                 case "400m":
                   runBest400(bestEffortsLoop[j]);
@@ -257,6 +258,9 @@ app.get('/home', ensureAuthenticated, function (req, res) {
                 case "10k":
                   runBest10k(bestEffortsLoop[j]);
                   break;
+                case "15k":
+                  runBest15k(bestEffortsLoop[j]);
+                  break;
               }
             }
 
@@ -266,6 +270,8 @@ app.get('/home', ensureAuthenticated, function (req, res) {
 
             if (allRuns.length >= activityIds.length) {
               console.log(pbTable)
+              
+
               res.render('home', {
                 allRuns: allRuns,
                 user: req.user._json,
@@ -306,6 +312,10 @@ app.listen(PORT, function(){
 
 function secondsToMins(input){
   return moment.duration(input, "seconds").format("m:ss")
+}
+
+function calcPace(dist, secs){
+  
 }
 
 function runBest400(effort){
@@ -360,6 +370,14 @@ function runBest10k(effort){
   if (effort.moving_time < best10k){
     best10k = effort.moving_time;
     pbTable[6] = [6, '10km', secondsToMins(effort.moving_time), 'pace', tempArr[0], tempArr[2]];
+    console.log(pbTable);
+  };
+}
+
+function runBest15k(effort){
+  if (effort.moving_time < best15k){
+    best15k = effort.moving_time;
+    pbTable[7] = [7, '15km', secondsToMins(effort.moving_time), 'pace', tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
