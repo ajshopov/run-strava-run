@@ -55,6 +55,10 @@ main {
   font-size: 1.2em;
 }
 
+.logo-link {
+  height: inherit;
+}
+
 #nav-mobile{
   height: inherit;
 }
@@ -70,3 +74,4 @@ main {
 #example_length{
   display: block;
 }
+
