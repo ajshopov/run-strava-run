@@ -16,6 +16,24 @@
 
   <div class="wrapper">
 
+<nav>
+  <div class="nav-wrapper white">
+    <img class="runman-logo" src="/images/runman-logo.png" alt="">
+    <ul id="nav-mobile" class="right">
+    <% if (!user) { %>
+  
+      <a id="strava-connect" href="/auth/strava">
+        <img src="/images/btn_strava_connectwith_orange@2x.png" alt="">
+      </a>
+    <% } else { %>
+      <a class="waves-effect waves-light btn-large deep-orange darken-1" href="/logout">logout</a>
+      
+    <% } %>
+    </ul>
+  </div>
+</nav>
+
+
     <div class="content">
     <%- body %>
     </div>

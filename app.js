@@ -170,12 +170,14 @@ var best15k = 99999;
 var tempArr;
 
 app.get('/about', function(req, res){
-  res.render('about')
+  res.render('about', { user: req.user })
 })
 
 
 app.get('/home', ensureAuthenticated, function (req, res) {
-  console.log(req.user.id)
+  console.log(req.user)
+  var premiumMember = req.user.premium === true ? 'YES' : 'NO'
+  var profileCreatedAt = moment(req.user._json.created_at).format('hh:mm a DD/MM/YY')
 
   var args = {
     id:req.user.id, 'access_token':accessTkn
@@ -225,7 +227,9 @@ app.get('/home', ensureAuthenticated, function (req, res) {
               fourWkTotal: fourWkTotal,
               ytdTotal: ytdTotal,
               allRunTotal: allRunTotal,
-              pbTableData: pbTable
+              pbTableData: pbTable,
+              premiumMember: premiumMember,
+              profileCreatedAt: profileCreatedAt
             }
           )
         }
@@ -298,7 +302,9 @@ app.get('/home', ensureAuthenticated, function (req, res) {
                 fourWkTotal: fourWkTotal,
                 ytdTotal: ytdTotal,
                 allRunTotal: allRunTotal,
-                pbTableData: pbTable
+                pbTableData: pbTable,
+                premiumMember: premiumMember,
+                profileCreatedAt: profileCreatedAt
               })
             }
 
