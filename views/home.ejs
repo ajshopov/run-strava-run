@@ -1,15 +1,16 @@
 <div class="row">
   <div class="col s3 home-header">
-    <img class="profile-pic" src="<%= user.profile %>">
-    <p>logged in as:</p>
-    <p><%= user.firstname %> <%= user.lastname %></p>
-    <p><%= user.id %></p>
-    <p><%= user.email %></p>
+    <div class="card teal lighten-1 small">
+        <div class="card-content white-text">
+            <img class="profile-pic" src="<%= user.profile %>">
+            <span class="card-title"><%= user.firstname %></span>
+        </div>
+    </div>
   </div>
   <div class="col s6 home-header">
     <h2>Your Dashboard</h2>
     <div class="section">
-      <table>
+      <table class="bordered">
         <thead>
           <tr>
             <th>run totals</th>
@@ -42,12 +43,20 @@
     </div>
   </div>
   <div class="col s3 home-header">
-    <a class="waves-effect waves-light btn-large deep-orange darken-1" href="/logout">logout</a>
-    <p>personal details</p>
-    <p>followers: <%= user.follower_count %></p>
-    <p>following: <%= user.friend_count %></p>
-    <p>premium member? <%= user.premium %></p>
-    <p>profile created: <%= user.created_at %></p>
+
+    <div class="card teal lighten-1 small">
+        <div class="card-content white-text">
+            <span class="card-title">Profile</span>
+            <p>Hi there, <%= user.firstname %> <%= user.lastname %>!</p>
+            <p>Strava ID: <%= user.id %></p>
+            <p><%= user.email %></p>
+            <p>Created: <%= profileCreatedAt %></p>
+            <p>Premium Member? <%= premiumMember %></p>
+            <p>Followers <%= user.follower_count %></p>
+            <p>Following <%= user.friend_count %></p>
+        </div>
+    </div>
+
   </div>
 </div>
 
@@ -134,7 +143,7 @@
         {title: "0"},
         {title: "Distance"},
         {title: "Time"},
-        {title: "Pace"},
+        {title: "Pace/km"},
         {title: "Activity_ID"},
         {title: "Date"}
       ],

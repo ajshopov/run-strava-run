@@ -17,13 +17,6 @@ var STRAVA_CLIENT_ID = process.env.STRAVA_CLIENT_ID
 var STRAVA_CLIENT_SECRET = process.env.STRAVA_CLIENT_SECRET
 var STRAVA_REDIRECT_URI = process.env.STRAVA_REDIRECT_URI
 
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
-});
 
 app.set('views', './views');
 app.set('view engine', 'ejs');
@@ -34,6 +27,14 @@ app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
 
 var appData;
 var accessTkn;
@@ -169,12 +170,14 @@ var best15k = 99999;
 var tempArr;
 
 app.get('/about', function(req, res){
-  res.render('about')
+  res.render('about', { user: req.user })
 })
 
 
 app.get('/home', ensureAuthenticated, function (req, res) {
-  console.log(req.user.id)
+  console.log(req.user)
+  var premiumMember = req.user.premium === true ? 'YES' : 'NO'
+  var profileCreatedAt = moment(req.user._json.created_at).format('HH:mm DD/MM/YY')
 
   var args = {
     id:req.user.id, 'access_token':accessTkn
@@ -224,7 +227,9 @@ app.get('/home', ensureAuthenticated, function (req, res) {
               fourWkTotal: fourWkTotal,
               ytdTotal: ytdTotal,
               allRunTotal: allRunTotal,
-              pbTableData: pbTable
+              pbTableData: pbTable,
+              premiumMember: premiumMember,
+              profileCreatedAt: profileCreatedAt
             }
           )
         }
@@ -237,7 +242,6 @@ app.get('/home', ensureAuthenticated, function (req, res) {
 
             console.log(payload.id)
 
-            var bestEffortsLoop = payload.best_efforts;
             // console.log(bestEffortsLoop[0])
             // console.log(bestEffortsLoop[1])
             // console.log(bestEffortsLoop.length)
@@ -250,33 +254,36 @@ app.get('/home', ensureAuthenticated, function (req, res) {
             tempArr.push(payload.distance)
             tempArr.push(secondsToMins(payload.moving_time));
 
+            
+            var bestEffortsLoop = payload.best_efforts;
+
   // loop through best efforts and take no. seconds, also check if best time
             for (var j = 0; j < bestEffortsLoop.length; j++) {
               tempArr.push(secondsToMins(bestEffortsLoop[j].moving_time));
               switch (bestEffortsLoop[j].name){
                 case "400m":
-                  runBest400(bestEffortsLoop[j]);
+                  checkBest400(bestEffortsLoop[j]);
                   break;
                 case "1/2 mile":
-                  runBestHalfMile(bestEffortsLoop[j]);
+                  checkBestHalfMile(bestEffortsLoop[j]);
                   break;
                 case "1k":
-                  runBest1k(bestEffortsLoop[j]);
+                  checkBest1k(bestEffortsLoop[j]);
                   break;
                 case "1 mile":
-                  runBest1mil(bestEffortsLoop[j]);
+                  checkBest1mil(bestEffortsLoop[j]);
                   break;
                 case "2 mile":
-                  runBest2mil(bestEffortsLoop[j]);
+                  checkBest2mil(bestEffortsLoop[j]);
                   break;
                 case "5k":
-                  runBest5k(bestEffortsLoop[j]);
+                  checkBest5k(bestEffortsLoop[j]);
                   break;
                 case "10k":
-                  runBest10k(bestEffortsLoop[j]);
+                  checkBest10k(bestEffortsLoop[j]);
                   break;
                 case "15k":
-                  runBest15k(bestEffortsLoop[j]);
+                  checkBest15k(bestEffortsLoop[j]);
                   break;
               }
             }
@@ -295,7 +302,9 @@ app.get('/home', ensureAuthenticated, function (req, res) {
                 fourWkTotal: fourWkTotal,
                 ytdTotal: ytdTotal,
                 allRunTotal: allRunTotal,
-                pbTableData: pbTable
+                pbTableData: pbTable,
+                premiumMember: premiumMember,
+                profileCreatedAt: profileCreatedAt
               })
             }
 
@@ -310,8 +319,10 @@ app.get('/home', ensureAuthenticated, function (req, res) {
 
 app.get('/logout', function(req, res){
   // strava.oauth.deauthorize({id:26705652}, function(err, payload, limits){});
-  req.logout();
-  res.redirect('/');
+  req.session.destroy(function(e){
+    req.logout();
+    res.redirect('/');
+  });
 });
 
   // fetch('https://www.strava.com/oauth/authorize', function(req, res){
@@ -338,7 +349,7 @@ function calcPace(dist, secs){
   return `${mins}:${secs}`;
 }
 
-function runBest400(effort){
+function checkBest400(effort){
   if (effort.moving_time < best400){
     best400 = effort.moving_time;
     pbTable[0] = [0, '400m', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
@@ -346,7 +357,7 @@ function runBest400(effort){
   };
 }
 
-function runBestHalfMile(effort){
+function checkBestHalfMile(effort){
   if (effort.moving_time < bestHalfMile){
     bestHalfMile = effort.moving_time;
     pbTable[1] = [1, '1/2 mile', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
@@ -354,7 +365,7 @@ function runBestHalfMile(effort){
   };
 }
 
-function runBest1k(effort){
+function checkBest1k(effort){
   if (effort.moving_time < best1k){
     best1k = effort.moving_time;
     pbTable[2] = [2, '1km', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
@@ -362,7 +373,7 @@ function runBest1k(effort){
   };
 }
 
-function runBest1mil(effort){
+function checkBest1mil(effort){
   if (effort.moving_time < best1Mile){
     best1Mile = effort.moving_time;
     pbTable[3] = [3, '1 mile', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
@@ -370,7 +381,7 @@ function runBest1mil(effort){
   };
 }
 
-function runBest2mil(effort){
+function checkBest2mil(effort){
   if (effort.moving_time < best2Mile){
     best2Mile = effort.moving_time;
     pbTable[4] = [4, '2 mile', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
@@ -378,7 +389,7 @@ function runBest2mil(effort){
   };
 }
 
-function runBest5k(effort){
+function checkBest5k(effort){
   if (effort.moving_time < best5k){
     best5k = effort.moving_time;
     pbTable[5] = [5, '5km', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
@@ -386,7 +397,7 @@ function runBest5k(effort){
   };
 }
 
-function runBest10k(effort){
+function checkBest10k(effort){
   if (effort.moving_time < best10k){
     best10k = effort.moving_time;
     pbTable[6] = [6, '10km', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
@@ -394,7 +405,7 @@ function runBest10k(effort){
   };
 }
 
-function runBest15k(effort){
+function checkBest15k(effort){
   if (effort.moving_time < best15k){
     best15k = effort.moving_time;
     pbTable[7] = [7, '15km', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
