@@ -168,6 +168,10 @@ var best15k = 99999;
 
 var tempArr;
 
+app.get('/about', function(req, res){
+  res.render('about')
+})
+
 
 app.get('/home', ensureAuthenticated, function (req, res) {
   console.log(req.user.id)
