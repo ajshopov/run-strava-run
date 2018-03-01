@@ -315,13 +315,16 @@ function secondsToMins(input){
 }
 
 function calcPace(dist, secs){
-  
+  var mins = parseInt((secs/dist*1000)/60);
+  var secs = parseInt((secs/dist*1000)) % 60;
+  secs = secs < 10 ? `0${secs}` : secs;
+  return `${mins}:${secs}`;
 }
 
 function runBest400(effort){
   if (effort.moving_time < best400){
     best400 = effort.moving_time;
-    pbTable[0] = [0, '400m', secondsToMins(effort.moving_time), 'pace', tempArr[0], tempArr[2]];
+    pbTable[0] = [0, '400m', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -329,7 +332,7 @@ function runBest400(effort){
 function runBestHalfMile(effort){
   if (effort.moving_time < bestHalfMile){
     bestHalfMile = effort.moving_time;
-    pbTable[1] = [1, '1/2 mile', secondsToMins(effort.moving_time), 'pace', tempArr[0], tempArr[2]];
+    pbTable[1] = [1, '1/2 mile', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -337,7 +340,7 @@ function runBestHalfMile(effort){
 function runBest1k(effort){
   if (effort.moving_time < best1k){
     best1k = effort.moving_time;
-    pbTable[2] = [2, '1km', secondsToMins(effort.moving_time), 'pace', tempArr[0], tempArr[2]];
+    pbTable[2] = [2, '1km', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -345,7 +348,7 @@ function runBest1k(effort){
 function runBest1mil(effort){
   if (effort.moving_time < best1Mile){
     best1Mile = effort.moving_time;
-    pbTable[3] = [3, '1 mile', secondsToMins(effort.moving_time), 'pace', tempArr[0], tempArr[2]];
+    pbTable[3] = [3, '1 mile', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -353,7 +356,7 @@ function runBest1mil(effort){
 function runBest2mil(effort){
   if (effort.moving_time < best2Mile){
     best2Mile = effort.moving_time;
-    pbTable[4] = [4, '2 mile', secondsToMins(effort.moving_time), 'pace', tempArr[0], tempArr[2]];
+    pbTable[4] = [4, '2 mile', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -361,7 +364,7 @@ function runBest2mil(effort){
 function runBest5k(effort){
   if (effort.moving_time < best5k){
     best5k = effort.moving_time;
-    pbTable[5] = [5, '5km', secondsToMins(effort.moving_time), 'pace', tempArr[0], tempArr[2]];
+    pbTable[5] = [5, '5km', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -369,7 +372,7 @@ function runBest5k(effort){
 function runBest10k(effort){
   if (effort.moving_time < best10k){
     best10k = effort.moving_time;
-    pbTable[6] = [6, '10km', secondsToMins(effort.moving_time), 'pace', tempArr[0], tempArr[2]];
+    pbTable[6] = [6, '10km', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -377,7 +380,7 @@ function runBest10k(effort){
 function runBest15k(effort){
   if (effort.moving_time < best15k){
     best15k = effort.moving_time;
-    pbTable[7] = [7, '15km', secondsToMins(effort.moving_time), 'pace', tempArr[0], tempArr[2]];
+    pbTable[7] = [7, '15km', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
