@@ -59,11 +59,11 @@ main {
   font-size: 1.2em;
 }
 
-#nav-mobile{
+.logo-link {
   height: inherit;
 }
 
-#nav-mobile > a {
+#nav-mobile{
   height: inherit;
 }
 
