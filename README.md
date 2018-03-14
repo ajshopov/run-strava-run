@@ -11,7 +11,7 @@ General Assembly WDI Project #4. Bring together all you've learnt, explore new s
 
 ### Problem
 
-Strava allows users to track their running and cycling activities via GPS, save their times, view statistical data and compare with other users. As a numbers person and an avid runner, I find the stats are fun and have helped me improve. However, Strava doesn't display 'Best Efforts' in a user-friendly manner, and if I hit my "2nd best estimated 2 mile effort", I can only find my best effort (or 3rd best for that matter) by manually searching through past activities.Any Strava user will immediately see the problem here as your activity database can build it quite quickly!
+Strava allows users to track their running and cycling activities via GPS, save their times, view statistical data and compare with other users. As a numbers person and an avid runner, I find the stats are fun and have helped me improve. However, Strava doesn't display 'Best Efforts' in a user-friendly manner, and if I hit my "2nd best estimated 2 mile effort", I can only find my best effort (or 3rd best for that matter) by manually searching through past activities.Any Strava user will immediately see the problem here as your activity database can build up quite quickly!
 
 ![best effort strava](https://github.com/ajshopov/run-strava-run/blob/master/public/images/best_effort_strava.png)
 
@@ -34,10 +34,4 @@ The dashboard shows a profile summary for the user and a table of their personal
 - DataTables jQuery plug-in
 
 ![Dashboard](https://github.com/ajshopov/run-strava-run/blob/master/public/images/dashboard.png)
-
-![Summary](https://github.com/ajshopov/run-strava-run/blob/master/public/images/summary.png)
-
-
-
-
 
