@@ -271,7 +271,7 @@ app.get('/home', ensureAuthenticated, function (req, res) {
   //add id first col
             tempArr.push(`<a href="http://www.strava.com/activities/${payload.id}" target="_blank">${payload.id}</a>`)
             tempArr.push(payload.kudos_count)
-            tempArr.push(moment(payload.start_date_local).subtract(payload.utc_offset, 'seconds').format('YYYY MMM Do - hh:mm a'))
+            tempArr.push(moment(payload.start_date_local).format('YYYY MMM Do - hh:mm a'))
             tempArr.push(payload.distance)
             tempArr.push(secondsToMins(payload.elapsed_time));
 
