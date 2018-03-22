@@ -141,8 +141,8 @@ app.get('/one_act', ensureAuthenticated, function(req,res){
     var bestData = payload.best_efforts
     var dataSet = [];
     for (var i = 0; i < bestData.length; i++) {
-      dataSet.push([bestData[i].name, bestData[i].moving_time])
-      console.log(bestData[i].moving_time)
+      dataSet.push([bestData[i].name, bestData[i].elapsed_time])
+      console.log(bestData[i].elapsed_time)
       console.log(dataSet)
     }
     
@@ -201,9 +201,9 @@ app.get('/home', ensureAuthenticated, function (req, res) {
     var allRunTotal = payload.all_run_totals;
 
     var timeTotalsInMins = [];
-    timeTotalsInMins.push(secondsToMins(fourWkTotal.moving_time));
-    timeTotalsInMins.push(secondsToMins(ytdTotal.moving_time));
-    timeTotalsInMins.push(secondsToMins(allRunTotal.moving_time));
+    timeTotalsInMins.push(secondsToMins(fourWkTotal.elapsed_time));
+    timeTotalsInMins.push(secondsToMins(ytdTotal.elapsed_time));
+    timeTotalsInMins.push(secondsToMins(allRunTotal.elapsed_time));
 
 
     console.log(fourWkTotal)
@@ -267,14 +267,14 @@ app.get('/home', ensureAuthenticated, function (req, res) {
             tempArr.push(payload.kudos_count)
             tempArr.push(moment(payload.start_date_local).subtract(payload.utc_offset, 'seconds').format('YYYY MMM Do - hh:mm a'))
             tempArr.push(payload.distance)
-            tempArr.push(secondsToMins(payload.moving_time));
+            tempArr.push(secondsToMins(payload.elapsed_time));
 
             
             var bestEffortsLoop = payload.best_efforts;
 
   // loop through best efforts and take no. seconds, also check if best time
             for (var j = 0; j < bestEffortsLoop.length; j++) {
-              tempArr.push(secondsToMins(bestEffortsLoop[j].moving_time));
+              tempArr.push(secondsToMins(bestEffortsLoop[j].elapsed_time));
               switch (bestEffortsLoop[j].name){
                 case "400m":
                   checkBest400(bestEffortsLoop[j]);
@@ -366,65 +366,65 @@ function calcPace(dist, secs){
 }
 
 function checkBest400(effort){
-  if (effort.moving_time < best400){
-    best400 = effort.moving_time;
-    pbTable[0] = [0, '400m', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
+  if (effort.elapsed_time < best400){
+    best400 = effort.elapsed_time;
+    pbTable[0] = [0, '400m', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
 
 function checkBestHalfMile(effort){
-  if (effort.moving_time < bestHalfMile){
-    bestHalfMile = effort.moving_time;
-    pbTable[1] = [1, '1/2 mile', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
+  if (effort.elapsed_time < bestHalfMile){
+    bestHalfMile = effort.elapsed_time;
+    pbTable[1] = [1, '1/2 mile', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
 
 function checkBest1k(effort){
-  if (effort.moving_time < best1k){
-    best1k = effort.moving_time;
-    pbTable[2] = [2, '1km', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
+  if (effort.elapsed_time < best1k){
+    best1k = effort.elapsed_time;
+    pbTable[2] = [2, '1km', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
 
 function checkBest1mil(effort){
-  if (effort.moving_time < best1Mile){
-    best1Mile = effort.moving_time;
-    pbTable[3] = [3, '1 mile', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
+  if (effort.elapsed_time < best1Mile){
+    best1Mile = effort.elapsed_time;
+    pbTable[3] = [3, '1 mile', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
 
 function checkBest2mil(effort){
-  if (effort.moving_time < best2Mile){
-    best2Mile = effort.moving_time;
-    pbTable[4] = [4, '2 mile', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
+  if (effort.elapsed_time < best2Mile){
+    best2Mile = effort.elapsed_time;
+    pbTable[4] = [4, '2 mile', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
 
 function checkBest5k(effort){
-  if (effort.moving_time < best5k){
-    best5k = effort.moving_time;
-    pbTable[5] = [5, '5km', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
+  if (effort.elapsed_time < best5k){
+    best5k = effort.elapsed_time;
+    pbTable[5] = [5, '5km', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
 
 function checkBest10k(effort){
-  if (effort.moving_time < best10k){
-    best10k = effort.moving_time;
-    pbTable[6] = [6, '10km', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
+  if (effort.elapsed_time < best10k){
+    best10k = effort.elapsed_time;
+    pbTable[6] = [6, '10km', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
 
 function checkBest15k(effort){
-  if (effort.moving_time < best15k){
-    best15k = effort.moving_time;
-    pbTable[7] = [7, '15km', secondsToMins(effort.moving_time), calcPace(effort.distance, effort.moving_time), tempArr[0], tempArr[2]];
+  if (effort.elapsed_time < best15k){
+    best15k = effort.elapsed_time;
+    pbTable[7] = [7, '15km', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
