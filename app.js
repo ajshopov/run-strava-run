@@ -163,6 +163,9 @@ var best2Mile;
 var best5k;
 var best10k;
 var best15k;
+// var best10Mile;
+// var best20k;
+var bestHalfMara;
 
 var tempArr;
 
@@ -182,6 +185,9 @@ app.get('/home', ensureAuthenticated, function (req, res) {
   best5k = 99999;
   best10k = 99999;
   best15k = 99999;
+  // best10Mile = 99999;
+  // best20k = 99999;
+  bestHalfMara = 99999;
 
   console.log(req.user)
   var premiumMember = req.user.premium === true ? 'YES' : 'NO'
@@ -300,6 +306,15 @@ app.get('/home', ensureAuthenticated, function (req, res) {
                 case "15k":
                   checkBest15k(bestEffortsLoop[j]);
                   break;
+                // case "10 mile":
+                //   checkBest10mil(bestEffortsLoop[j]);
+                //   break;
+                // case "20k":
+                //   checkBest20k(bestEffortsLoop[j]);
+                //   break;
+                case "Half-Marathon":
+                  checkBestHalfMara(bestEffortsLoop[j]);
+                  break;
               }
             }
 
@@ -368,7 +383,7 @@ function calcPace(dist, secs){
 function checkBest400(effort){
   if (effort.elapsed_time < best400){
     best400 = effort.elapsed_time;
-    pbTable[0] = [0, '400m', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
+    pbTable[0] = [0, '400 m', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -384,7 +399,7 @@ function checkBestHalfMile(effort){
 function checkBest1k(effort){
   if (effort.elapsed_time < best1k){
     best1k = effort.elapsed_time;
-    pbTable[2] = [2, '1km', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
+    pbTable[2] = [2, '1 km', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -408,7 +423,7 @@ function checkBest2mil(effort){
 function checkBest5k(effort){
   if (effort.elapsed_time < best5k){
     best5k = effort.elapsed_time;
-    pbTable[5] = [5, '5km', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
+    pbTable[5] = [5, '5 km', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -416,7 +431,7 @@ function checkBest5k(effort){
 function checkBest10k(effort){
   if (effort.elapsed_time < best10k){
     best10k = effort.elapsed_time;
-    pbTable[6] = [6, '10km', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
+    pbTable[6] = [6, '10 km', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
@@ -424,7 +439,31 @@ function checkBest10k(effort){
 function checkBest15k(effort){
   if (effort.elapsed_time < best15k){
     best15k = effort.elapsed_time;
-    pbTable[7] = [7, '15km', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
+    pbTable[7] = [7, '15 km', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
+    console.log(pbTable);
+  };
+}
+
+// function checkBest10mil(effort){
+//   if (effort.elapsed_time < best10Mile){
+//     best10Mile = effort.elapsed_time;
+//     pbTable[8] = [8, '10 mile', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
+//     console.log(pbTable);
+//   };
+// }
+
+// function checkBest20k(effort){
+//   if (effort.elapsed_time < best20k){
+//     best20k = effort.elapsed_time;
+//     pbTable[9] = [9, '20 km', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
+//     console.log(pbTable);
+//   };
+// }
+
+function checkBestHalfMara(effort){
+  if (effort.elapsed_time < bestHalfMara){
+    bestHalfMara = effort.elapsed_time;
+    pbTable[8] = [8, 'Half Marathon', secondsToMins(effort.elapsed_time), calcPace(effort.distance, effort.elapsed_time), tempArr[0], tempArr[2]];
     console.log(pbTable);
   };
 }
