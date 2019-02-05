@@ -217,7 +217,7 @@ app.get('/home', ensureAuthenticated, function (req, res) {
     console.log(allRunTotal)
 
 
-      request(`https://www.strava.com/api/v3/athlete/activities?per_page=250&access_token=${accessTkn}`, function (error, response, body) {
+      request(`https://www.strava.com/api/v3/athlete/activities?per_page=200&access_token=${accessTkn}`, function (error, response, body) {
         // console.log('error:', error); // Print the error if one occurred
         // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
         // console.log('body:', body); // Print the HTML for the Google homepage.
